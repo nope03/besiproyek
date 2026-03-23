@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300">
+
+  <defs>
+    <linearGradient id="bgbrc" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0c1216"/>
+      <stop offset="100%" stop-color="#080a0e"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="300" fill="url(#bgbrc)"/>
+  <pattern id="gbrc" width="30" height="30" patternUnits="userSpaceOnUse">
+    <path d="M 30 0 L 0 0 0 30" fill="none" stroke="#ffffff" stroke-width="0.2" opacity="0.05"/>
+  </pattern>
+  <rect width="400" height="300" fill="url(#gbrc)"/>
+  <!-- BRC fence panel -->
+  <g transform="translate(200,145)">
+    <!-- Frame border of panel -->
+    <rect x="-155" y="-95" width="310" height="190" fill="none" stroke="#e05a1e" stroke-width="3" rx="3" opacity="0.6"/>
+    <!-- Horizontal bars -->
+    <g stroke="#b0b8c8" stroke-width="5" stroke-linecap="round">
+      <line x1="-148" y1="-75" x2="148" y2="-75"/>
+      <line x1="-148" y1="-45" x2="148" y2="-45"/>
+      <line x1="-148" y1="-15" x2="148" y2="-15"/>
+      <line x1="-148" y1="15" x2="148" y2="15"/>
+      <line x1="-148" y1="45" x2="148" y2="45"/>
+      <line x1="-148" y1="75" x2="148" y2="75"/>
+    </g>
+    <!-- Vertical bars -->
+    <g stroke="#c8cdd8" stroke-width="4" stroke-linecap="round">
+      <line x1="-130" y1="-88" x2="-130" y2="88"/>
+      <line x1="-100" y1="-88" x2="-100" y2="88"/>
+      <line x1="-70" y1="-88" x2="-70" y2="88"/>
+      <line x1="-40" y1="-88" x2="-40" y2="88"/>
+      <line x1="-10" y1="-88" x2="-10" y2="88"/>
+      <line x1="20" y1="-88" x2="20" y2="88"/>
+      <line x1="50" y1="-88" x2="50" y2="88"/>
+      <line x1="80" y1="-88" x2="80" y2="88"/>
+      <line x1="110" y1="-88" x2="110" y2="88"/>
+      <line x1="140" y1="-88" x2="140" y2="88"/>
+    </g>
+    <!-- Weld spots at intersections -->
+    <g fill="#e05a1e" opacity="0.55">
+      <circle cx="-130" cy="-75" r="4"/>
+      <circle cx="-100" cy="-75" r="4"/>
+      <circle cx="-70" cy="-75" r="4"/>
+      <circle cx="-40" cy="-75" r="4"/>
+      <circle cx="-10" cy="-75" r="4"/>
+      <circle cx="20" cy="-75" r="4"/>
+      <circle cx="50" cy="-75" r="4"/>
+      <circle cx="80" cy="-75" r="4"/>
+      <circle cx="110" cy="-75" r="4"/>
+      <circle cx="140" cy="-75" r="4"/>
+      <circle cx="-130" cy="-45" r="4"/>
+      <circle cx="-100" cy="-45" r="4"/>
+      <circle cx="-70" cy="-45" r="4"/>
+      <circle cx="-40" cy="-45" r="4"/>
+      <circle cx="-10" cy="-45" r="4"/>
+      <circle cx="20" cy="-45" r="4"/>
+      <circle cx="50" cy="-45" r="4"/>
+      <circle cx="80" cy="-45" r="4"/>
+      <circle cx="110" cy="-45" r="4"/>
+      <circle cx="140" cy="-45" r="4"/>
+    </g>
+    <!-- Top pointed spikes -->
+    <g fill="#e05a1e" opacity="0.8">
+      <polygon points="-130,-88 -124,-100 -118,-88"/>
+      <polygon points="-70,-88 -64,-100 -58,-88"/>
+      <polygon points="-10,-88 -4,-100 2,-88"/>
+      <polygon points="50,-88 56,-100 62,-88"/>
+      <polygon points="110,-88 116,-100 122,-88"/>
+    </g>
+  </g>
+  <rect x="0" y="255" width="400" height="45" fill="#000000" opacity="0.55"/>
+  <text x="200" y="283" font-family="Arial Black, sans-serif" font-size="15" font-weight="900" fill="#e05a1e" text-anchor="middle" letter-spacing="3">PAGAR BRC (WELDED MESH)</text>
+
+</svg>

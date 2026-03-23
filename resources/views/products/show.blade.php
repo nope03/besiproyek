@@ -29,7 +29,7 @@
     <div class="container">
         <div class="product-detail-layout">
 
-            <!-- Main Content -->
+            <!-- ── Main Content ─────────────────────────────── -->
             <div class="product-detail-main">
 
                 <!-- Intro -->
@@ -38,14 +38,18 @@
                     <p class="pd-lead">{{ $product['intro'] }}</p>
                 </div>
 
-                <!-- Pengertian -->
+                <!-- Pengertian + Product Image -->
                 <div class="pd-section">
                     <h3 class="pd-heading">Pengertian</h3>
                     <div class="pd-image-wrap">
-                        <div class="pd-image-placeholder">
-                            <span class="pd-image-icon">{{ $product['icon'] }}</span>
-                            <span class="pd-image-label">{{ $product['name'] }}</span>
-                        </div>
+                        <img
+                            src="{{ asset('images/products/' . $product['slug'] . '.svg') }}"
+                            alt="Ilustrasi {{ $product['name'] }}"
+                            class="pd-product-image"
+                            width="800"
+                            height="400"
+                            loading="lazy"
+                        >
                     </div>
                     <p>{{ $product['pengertian'] }}</p>
                 </div>
@@ -128,7 +132,7 @@
 
                 <!-- CTA -->
                 <div class="pd-cta">
-                    <p>Butuh {{ $product['name'] }} untuk proyek Anda? Hubungi kami sekarang untuk konsultasi dan penawaran harga terbaik.</p>
+                    <p>Butuh <strong>{{ $product['name'] }}</strong> untuk proyek Anda? Hubungi kami untuk konsultasi dan penawaran harga terbaik.</p>
                     <a href="https://wa.me/6281130556500?text=Halo%20kak,%20saya%20butuh%20informasi%20mengenai%20{{ urlencode($product['name']) }}%20untuk%20proyek%20saya."
                        target="_blank" rel="noopener" class="btn btn--primary">
                         💬 Tanya via WhatsApp
@@ -138,9 +142,22 @@
 
             </div>
 
-            <!-- Sidebar -->
+            <!-- ── Sidebar ────────────────────────────────── -->
             <aside class="product-detail-sidebar">
 
+                <!-- Product Image (sidebar) -->
+                <div class="sidebar-card sidebar-card--image">
+                    <img
+                        src="{{ asset('images/products/' . $product['slug'] . '.svg') }}"
+                        alt="{{ $product['name'] }}"
+                        class="sidebar-product-image"
+                        width="300"
+                        height="200"
+                        loading="lazy"
+                    >
+                </div>
+
+                <!-- Spesifikasi -->
                 <div class="sidebar-card">
                     <h4>Spesifikasi Singkat</h4>
                     <table class="spec-table">
@@ -153,6 +170,7 @@
                     </table>
                 </div>
 
+                <!-- CTA -->
                 <div class="sidebar-card sidebar-card--cta">
                     <h4>Minta Penawaran</h4>
                     <p>Tim kami siap membantu Anda mendapatkan harga terbaik dan ketersediaan stok.</p>
@@ -166,34 +184,51 @@
                     </div>
                 </div>
 
+                <!-- Other Products Navigation -->
                 <div class="sidebar-card">
                     <h4>Produk Lainnya</h4>
                     <ul class="sidebar-nav">
-                        <li><a href="{{ url('/product/besi-beton') }}">Besi Beton</a></li>
-                        <li><a href="{{ url('/product/besi-siku') }}">Besi Siku</a></li>
-                        <li><a href="{{ url('/product/besi-virkan') }}">Besi Virkan (WF)</a></li>
-                        <li><a href="{{ url('/product/h-beam') }}">H-Beam</a></li>
-                        <li><a href="{{ url('/product/unp') }}">Kanal UNP</a></li>
-                        <li><a href="{{ url('/product/cnp') }}">Kanal CNP</a></li>
-                        <li><a href="{{ url('/product/plat-hitam') }}">Plat Hitam</a></li>
-                        <li><a href="{{ url('/product/plat-bordes') }}">Plat Bordes</a></li>
-                        <li><a href="{{ url('/product/pipa-galvanis') }}">Pipa Galvanis</a></li>
-                        <li><a href="{{ url('/product/pipa-stainless') }}">Pipa Stainless Steel</a></li>
-                        <li><a href="{{ url('/product/hollow-hitam') }}">Hollow Hitam</a></li>
-                        <li><a href="{{ url('/product/hollow-galvalum') }}">Hollow Galvalum</a></li>
-                        <li><a href="{{ url('/product/atap-galvalum') }}">Atap Galvalum</a></li>
-                        <li><a href="{{ url('/product/canal-galvalum') }}">Canal Galvalum</a></li>
-                        <li><a href="{{ url('/product/wiremesh') }}">Wiremesh</a></li>
-                        <li><a href="{{ url('/product/pagar-brc') }}">Pagar BRC</a></li>
-                        <li><a href="{{ url('/product/bondek') }}">Bondek</a></li>
-                        <li><a href="{{ url('/product/angkur') }}">Angkur</a></li>
-                        <li><a href="{{ url('/product/mur-baut') }}">Mur dan Baut</a></li>
-                        <li><a href="{{ url('/product/kawat') }}">Kawat Duri & Harmonika</a></li>
+                        @php
+                        $navProducts = [
+                            ['slug'=>'besi-beton','name'=>'Besi Beton'],
+                            ['slug'=>'besi-siku','name'=>'Besi Siku'],
+                            ['slug'=>'besi-virkan','name'=>'Besi Virkan (WF)'],
+                            ['slug'=>'h-beam','name'=>'H-Beam'],
+                            ['slug'=>'unp','name'=>'Kanal UNP'],
+                            ['slug'=>'cnp','name'=>'Kanal CNP'],
+                            ['slug'=>'plat-hitam','name'=>'Plat Hitam'],
+                            ['slug'=>'plat-bordes','name'=>'Plat Bordes'],
+                            ['slug'=>'pipa-galvanis','name'=>'Pipa Galvanis'],
+                            ['slug'=>'pipa-stainless','name'=>'Pipa Stainless Steel'],
+                            ['slug'=>'hollow-hitam','name'=>'Hollow Hitam'],
+                            ['slug'=>'hollow-galvalum','name'=>'Hollow Galvalum'],
+                            ['slug'=>'atap-galvalum','name'=>'Atap Galvalum'],
+                            ['slug'=>'canal-galvalum','name'=>'Canal Galvalum'],
+                            ['slug'=>'wiremesh','name'=>'Wiremesh'],
+                            ['slug'=>'pagar-brc','name'=>'Pagar BRC'],
+                            ['slug'=>'bondek','name'=>'Bondek'],
+                            ['slug'=>'angkur','name'=>'Angkur'],
+                            ['slug'=>'mur-baut','name'=>'Mur dan Baut'],
+                            ['slug'=>'kawat','name'=>'Kawat Duri & Harmonika'],
+                        ];
+                        @endphp
+                        @foreach($navProducts as $nav)
+                        @if($nav['slug'] !== $product['slug'])
+                        <li>
+                            <a href="{{ url('/product/' . $nav['slug']) }}">
+                                <img src="{{ asset('images/products/' . $nav['slug'] . '.svg') }}"
+                                     alt="{{ $nav['name'] }}"
+                                     class="sidebar-nav-thumb"
+                                     width="36" height="24" loading="lazy">
+                                {{ $nav['name'] }}
+                            </a>
+                        </li>
+                        @endif
+                        @endforeach
                     </ul>
                 </div>
 
             </aside>
-
         </div>
     </div>
 </section>

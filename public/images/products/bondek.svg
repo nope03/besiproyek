@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300">
+
+  <defs>
+    <linearGradient id="bgbd" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0e1218"/>
+      <stop offset="100%" stop-color="#080a10"/>
+    </linearGradient>
+    <linearGradient id="bdm" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#d5e0e8"/>
+      <stop offset="50%" stop-color="#b0bcc8"/>
+      <stop offset="100%" stop-color="#788898"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="300" fill="url(#bgbd)"/>
+  <pattern id="gbd" width="30" height="30" patternUnits="userSpaceOnUse">
+    <path d="M 30 0 L 0 0 0 30" fill="none" stroke="#ffffff" stroke-width="0.2" opacity="0.06"/>
+  </pattern>
+  <rect width="400" height="300" fill="url(#gbd)"/>
+  <!-- Bondek floor deck profile (trapezoidal) -->
+  <g transform="translate(200,150)">
+    <!-- Top concrete layer (poured) -->
+    <rect x="-160" y="-85" width="320" height="35" fill="#8898a8" opacity="0.3" rx="2"/>
+    <text x="0" y="-62" font-family="Arial, sans-serif" font-size="10" fill="#9098b0" opacity="0.5" text-anchor="middle">BETON</text>
+    <!-- Bondek deck profile - multiple trapezoidal ribs -->
+    <!-- Base plate (top) -->
+    <rect x="-160" y="-50" width="320" height="8" fill="url(#bdm)"/>
+    <!-- Rib 1 -->
+    <polygon points="-145,-42 -125,-42 -120,20 -150,20" fill="#a0a8c0"/>
+    <polygon points="-145,-42 -125,-42 -125,-50 -145,-50" fill="#c8d0e0"/>
+    <!-- Rib 2 -->
+    <polygon points="-80,-42 -60,-42 -55,20 -85,20" fill="#a0a8c0"/>
+    <polygon points="-80,-42 -60,-42 -60,-50 -80,-50" fill="#c8d0e0"/>
+    <!-- Rib 3 (center) -->
+    <polygon points="-15,-42 5,-42 10,20 -20,20" fill="#a0a8c0"/>
+    <polygon points="-15,-42 5,-42 5,-50 -15,-50" fill="#c8d0e0"/>
+    <!-- Rib 4 -->
+    <polygon points="50,-42 70,-42 75,20 45,20" fill="#a0a8c0"/>
+    <polygon points="50,-42 70,-42 70,-50 50,-50" fill="#c8d0e0"/>
+    <!-- Rib 5 -->
+    <polygon points="115,-42 135,-42 140,20 110,20" fill="#a0a8c0"/>
+    <polygon points="115,-42 135,-42 135,-50 115,-50" fill="#c8d0e0"/>
+    <!-- Bottom flat plate -->
+    <rect x="-160" y="20" width="320" height="8" fill="url(#bdm)"/>
+    <!-- Emboss dimples on top face -->
+    <g fill="#e8eef5" opacity="0.2">
+      <ellipse cx="-135" cy="-46" rx="6" ry="2"/>
+      <ellipse cx="-70" cy="-46" rx="6" ry="2"/>
+      <ellipse cx="-5" cy="-46" rx="6" ry="2"/>
+      <ellipse cx="60" cy="-46" rx="6" ry="2"/>
+      <ellipse cx="125" cy="-46" rx="6" ry="2"/>
+    </g>
+    <!-- Orange accent band -->
+    <rect x="-160" y="-50" width="8" height="78" fill="#e05a1e" opacity="0.5" rx="1"/>
+    <!-- Shine on top -->
+    <rect x="-160" y="-50" width="320" height="2" fill="#ffffff" opacity="0.25"/>
+    <!-- Profile height dimension -->
+    <line x1="168" y1="-50" x2="168" y2="28" stroke="#e05a1e" stroke-width="1.5" opacity="0.7"/>
+    <line x1="163" y1="-50" x2="173" y2="-50" stroke="#e05a1e" stroke-width="1.5" opacity="0.7"/>
+    <line x1="163" y1="28" x2="173" y2="28" stroke="#e05a1e" stroke-width="1.5" opacity="0.7"/>
+    <text x="182" y="-8" font-family="Arial, sans-serif" font-size="10" fill="#e05a1e" opacity="0.85">75mm</text>
+  </g>
+  <rect x="0" y="255" width="400" height="45" fill="#000000" opacity="0.55"/>
+  <text x="200" y="283" font-family="Arial Black, sans-serif" font-size="15" font-weight="900" fill="#e05a1e" text-anchor="middle" letter-spacing="3">BONDEK (FLOOR DECK)</text>
+
+</svg>

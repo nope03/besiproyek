@@ -890,3 +890,164 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
     .pd-jenis-grid { grid-template-columns: 1fr; }
     .pd-cta { flex-direction: column; align-items: flex-start; }
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   PRODUCT IMAGE STYLES
+═══════════════════════════════════════════════════════════════ */
+
+/* ── Catalog Card with Image ─────────────────────────────────── */
+.catalog-card {
+    display: flex;
+    flex-direction: column;
+    padding: 0;               /* remove old padding, image goes edge-to-edge */
+    overflow: hidden;
+}
+
+.catalog-card__img-link {
+    display: block;
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+    background: #111114;
+}
+
+.catalog-card__img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.catalog-card:hover .catalog-card__img {
+    transform: scale(1.04);
+}
+
+.catalog-card__cat-badge {
+    position: absolute;
+    top: 0.75rem;
+    left: 0.75rem;
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--white);
+    background: var(--accent);
+    padding: 0.2rem 0.55rem;
+    border-radius: 2px;
+}
+
+.catalog-card__body {
+    padding: 1.4rem;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    gap: 0.75rem;
+}
+
+.catalog-card__name {
+    font-family: var(--display);
+    font-size: 1.35rem;
+    color: var(--white);
+    line-height: 1.1;
+    letter-spacing: 0.02em;
+}
+
+.catalog-card__desc {
+    font-size: 0.82rem;
+    color: var(--steel2);
+    line-height: 1.65;
+    flex: 1;
+}
+
+.catalog-card__cta {
+    font-size: 0.76rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    transition: gap var(--transition);
+    margin-top: auto;
+    padding-top: 0.5rem;
+    border-top: 1px solid var(--border);
+}
+.catalog-card__cta:hover { text-decoration: underline; }
+
+/* ── Product Detail Image ───────────────────────────────────── */
+.pd-product-image {
+    width: 100%;
+    height: auto;
+    max-height: 380px;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface2);
+}
+
+/* ── Sidebar Product Image ──────────────────────────────────── */
+.sidebar-card--image {
+    padding: 0;
+    overflow: hidden;
+    border-radius: var(--radius);
+}
+
+.sidebar-product-image {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: var(--radius);
+    background: var(--surface2);
+}
+
+/* ── Sidebar Nav with Thumbnail ─────────────────────────────── */
+.sidebar-nav a {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.5rem 0.25rem;
+    font-size: 0.8rem;
+    color: var(--steel2);
+    transition: color var(--transition);
+    letter-spacing: 0.01em;
+}
+
+.sidebar-nav a:hover {
+    color: var(--accent);
+    padding-left: 0.4rem;
+}
+
+.sidebar-nav-thumb {
+    width: 44px;
+    height: 30px;
+    object-fit: cover;
+    border-radius: 3px;
+    background: var(--surface2);
+    flex-shrink: 0;
+    border: 1px solid var(--border);
+}
+
+/* ── Home Page Product Preview Cards with image ─────────────── */
+.product-card__img--beton,
+.product-card__img--alt2,
+.product-card__img--alt3,
+.product-card__img--alt4 {
+    background: var(--surface2);
+}
+
+/* Override old ::after pseudo content for product preview cards */
+.product-card__img--beton::after,
+.product-card__img--alt2::after,
+.product-card__img--alt3::after,
+.product-card__img--alt4::after {
+    display: none !important;
+}
+
+/* ── Responsive adjustments ─────────────────────────────────── */
+@media (max-width: 768px) {
+    .catalog-card__img { height: 180px; }
+    .pd-product-image  { max-height: 260px; }
+    .sidebar-nav-thumb { width: 36px; height: 24px; }
+}

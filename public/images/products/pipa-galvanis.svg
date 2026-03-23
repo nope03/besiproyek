@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300">
+
+  <defs>
+    <linearGradient id="bgpg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0c1418"/>
+      <stop offset="100%" stop-color="#080a10"/>
+    </linearGradient>
+    <linearGradient id="pipeg" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#607888"/>
+      <stop offset="25%" stop-color="#c8d8dc"/>
+      <stop offset="50%" stop-color="#e0eef0"/>
+      <stop offset="75%" stop-color="#90a8b0"/>
+      <stop offset="100%" stop-color="#506070"/>
+    </linearGradient>
+    <linearGradient id="pipeg2" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#506878"/>
+      <stop offset="30%" stop-color="#a8c0c8"/>
+      <stop offset="60%" stop-color="#c0d8e0"/>
+      <stop offset="100%" stop-color="#405868"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="300" fill="url(#bgpg)"/>
+  <pattern id="gpg" width="30" height="30" patternUnits="userSpaceOnUse">
+    <path d="M 30 0 L 0 0 0 30" fill="none" stroke="#ffffff" stroke-width="0.2" opacity="0.06"/>
+  </pattern>
+  <rect width="400" height="300" fill="url(#gpg)"/>
+  <!-- Three galvanized pipes in perspective -->
+  <g transform="translate(200,150)">
+    <!-- Pipe 1 (back) -->
+    <rect x="-130" y="-55" width="260" height="50" fill="url(#pipeg2)" opacity="0.7" rx="25"/>
+    <ellipse cx="-130" cy="-30" rx="25" ry="25" fill="#506070" opacity="0.7"/>
+    <ellipse cx="-130" cy="-30" rx="16" ry="16" fill="#202830" opacity="0.9"/>
+    <ellipse cx="130" cy="-30" rx="25" ry="25" fill="#809090" opacity="0.7"/>
+    <ellipse cx="130" cy="-30" rx="16" ry="16" fill="#202830" opacity="0.9"/>
+    <!-- Pipe 2 (middle) -->
+    <rect x="-130" y="-20" width="260" height="55" fill="url(#pipeg)" opacity="0.85" rx="27"/>
+    <ellipse cx="-130" cy="7" rx="27" ry="27" fill="#405868"/>
+    <ellipse cx="-130" cy="7" rx="18" ry="18" fill="#181e24"/>
+    <ellipse cx="130" cy="7" rx="27" ry="27" fill="#8090a0"/>
+    <ellipse cx="130" cy="7" rx="18" ry="18" fill="#181e24"/>
+    <line x1="-130" y1="-18" x2="130" y2="-18" stroke="#ffffff" stroke-width="2" opacity="0.3"/>
+    <!-- Pipe 3 (front) -->
+    <rect x="-120" y="20" width="240" height="50" fill="url(#pipeg)" opacity="0.9" rx="25"/>
+    <ellipse cx="-120" cy="45" rx="25" ry="25" fill="#405868"/>
+    <ellipse cx="-120" cy="45" rx="16" ry="16" fill="#181e24"/>
+    <ellipse cx="120" cy="45" rx="25" ry="25" fill="#8898a8"/>
+    <ellipse cx="120" cy="45" rx="16" ry="16" fill="#181e24"/>
+    <line x1="-120" y1="22" x2="120" y2="22" stroke="#ffffff" stroke-width="1.5" opacity="0.25"/>
+    <!-- Zinc coating highlight -->
+    <rect x="-100" y="22" width="30" height="46" rx="15" fill="#d0e8f0" opacity="0.15"/>
+    <!-- Orange band (product marking) -->
+    <rect x="50" y="20" width="12" height="50" fill="#e05a1e" opacity="0.6" rx="2"/>
+  </g>
+  <rect x="0" y="255" width="400" height="45" fill="#000000" opacity="0.55"/>
+  <text x="200" y="283" font-family="Arial Black, sans-serif" font-size="15" font-weight="900" fill="#e05a1e" text-anchor="middle" letter-spacing="3">PIPA GALVANIS (HOT-DIP)</text>
+
+</svg>

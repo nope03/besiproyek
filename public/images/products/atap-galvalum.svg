@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300">
+
+  <defs>
+    <linearGradient id="bgag" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0e141a"/>
+      <stop offset="100%" stop-color="#080a10"/>
+    </linearGradient>
+    <linearGradient id="roof1" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#e0e8f0"/>
+      <stop offset="50%" stop-color="#b8c8d8"/>
+      <stop offset="100%" stop-color="#8898a8"/>
+    </linearGradient>
+    <linearGradient id="roof2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#c8d8e8"/>
+      <stop offset="100%" stop-color="#7888a0"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="300" fill="url(#bgag)"/>
+  <pattern id="gag" width="30" height="30" patternUnits="userSpaceOnUse">
+    <path d="M 30 0 L 0 0 0 30" fill="none" stroke="#ffffff" stroke-width="0.2" opacity="0.06"/>
+  </pattern>
+  <rect width="400" height="300" fill="url(#gag)"/>
+  <!-- Corrugated roof sheet with waves -->
+  <g transform="translate(200,145)">
+    <!-- Sheet 1 (back) -->
+    <g transform="translate(0, -30)" opacity="0.6">
+      <path d="M -150 -30 Q -130 -50 -110 -30 Q -90 -10 -70 -30 Q -50 -50 -30 -30 Q -10 -10 10 -30 Q 30 -50 50 -30 Q 70 -10 90 -30 Q 110 -50 130 -30 Q 150 -10 150 -30 L 150 10 Q 130 30 110 10 Q 90 -10 70 10 Q 50 30 30 10 Q 10 -10 -10 10 Q -30 30 -50 10 Q -70 -10 -90 10 Q -110 30 -130 10 Q -150 -10 -150 10 Z" fill="url(#roof2)"/>
+    </g>
+    <!-- Sheet 2 (middle) -->
+    <g transform="translate(0, 0)" opacity="0.8">
+      <path d="M -150 -30 Q -130 -50 -110 -30 Q -90 -10 -70 -30 Q -50 -50 -30 -30 Q -10 -10 10 -30 Q 30 -50 50 -30 Q 70 -10 90 -30 Q 110 -50 130 -30 Q 150 -10 150 -30 L 150 10 Q 130 30 110 10 Q 90 -10 70 10 Q 50 30 30 10 Q 10 -10 -10 10 Q -30 30 -50 10 Q -70 -10 -90 10 Q -110 30 -130 10 Q -150 -10 -150 10 Z" fill="url(#roof1)"/>
+      <!-- Shine on peaks -->
+      <path d="M -150 -30 Q -130 -50 -110 -30" stroke="#ffffff" stroke-width="1.5" fill="none" opacity="0.4"/>
+      <path d="M -70 -30 Q -50 -50 -30 -30" stroke="#ffffff" stroke-width="1.5" fill="none" opacity="0.4"/>
+      <path d="M 10 -30 Q 30 -50 50 -30" stroke="#ffffff" stroke-width="1.5" fill="none" opacity="0.4"/>
+      <path d="M 90 -30 Q 110 -50 130 -30" stroke="#ffffff" stroke-width="1.5" fill="none" opacity="0.4"/>
+    </g>
+    <!-- Sheet 3 (front) -->
+    <g transform="translate(0, 35)">
+      <path d="M -150 -30 Q -130 -50 -110 -30 Q -90 -10 -70 -30 Q -50 -50 -30 -30 Q -10 -10 10 -30 Q 30 -50 50 -30 Q 70 -10 90 -30 Q 110 -50 130 -30 Q 150 -10 150 -30 L 150 15 Q 130 35 110 15 Q 90 -5 70 15 Q 50 35 30 15 Q 10 -5 -10 15 Q -30 35 -50 15 Q -70 -5 -90 15 Q -110 35 -130 15 Q -150 -5 -150 15 Z" fill="url(#roof1)"/>
+      <path d="M -150 -30 Q -130 -50 -110 -30" stroke="#ffffff" stroke-width="2" fill="none" opacity="0.5"/>
+      <path d="M -70 -30 Q -50 -50 -30 -30" stroke="#ffffff" stroke-width="2" fill="none" opacity="0.5"/>
+      <path d="M 10 -30 Q 30 -50 50 -30" stroke="#ffffff" stroke-width="2" fill="none" opacity="0.5"/>
+      <path d="M 90 -30 Q 110 -50 130 -30" stroke="#ffffff" stroke-width="2" fill="none" opacity="0.5"/>
+    </g>
+    <!-- Galvalum spangle marks -->
+    <g opacity="0.12" fill="#ffffff">
+      <polygon points="-90,-28 -80,-34 -70,-28 -80,-22"/>
+      <polygon points="-30,-28 -20,-34 -10,-28 -20,-22"/>
+      <polygon points="30,-28 40,-34 50,-28 40,-22"/>
+      <polygon points="90,-28 100,-34 110,-28 100,-22"/>
+    </g>
+    <!-- Orange end cap -->
+    <rect x="-150" y="-30" width="8" height="50" fill="#e05a1e" opacity="0.5" rx="2"/>
+  </g>
+  <rect x="0" y="255" width="400" height="45" fill="#000000" opacity="0.55"/>
+  <text x="200" y="283" font-family="Arial Black, sans-serif" font-size="15" font-weight="900" fill="#e05a1e" text-anchor="middle" letter-spacing="3">ATAP GALVALUM SPANDEK</text>
+
+</svg>

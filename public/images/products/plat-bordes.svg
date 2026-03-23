@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300">
+
+  <defs>
+    <linearGradient id="bgpb" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0e1218"/>
+      <stop offset="100%" stop-color="#080a10"/>
+    </linearGradient>
+    <linearGradient id="plat2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#c0c8dc"/>
+      <stop offset="100%" stop-color="#8090b0"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="300" fill="url(#bgpb)"/>
+  <pattern id="gpb" width="28" height="28" patternUnits="userSpaceOnUse">
+    <path d="M 28 0 L 0 0 0 28" fill="none" stroke="#ffffff" stroke-width="0.2" opacity="0.06"/>
+  </pattern>
+  <rect width="400" height="300" fill="url(#gpb)"/>
+  <!-- Checker plate with raised diamond pattern -->
+  <g transform="translate(200,150)">
+    <!-- Base plate -->
+    <rect x="-135" y="-60" width="270" height="120" fill="url(#plat2)" rx="2"/>
+    <rect x="-135" y="-60" width="270" height="4" fill="#ffffff" opacity="0.2" rx="2"/>
+    <!-- Diamond raised pattern - row 1 -->
+    <g fill="#e8ecf5" opacity="0.85">
+      <polygon points="-110,-45 -95,-52 -80,-45 -95,-38"/>
+      <polygon points="-70,-45 -55,-52 -40,-45 -55,-38"/>
+      <polygon points="-30,-45 -15,-52 0,-45 -15,-38"/>
+      <polygon points="10,-45 25,-52 40,-45 25,-38"/>
+      <polygon points="50,-45 65,-52 80,-45 65,-38"/>
+      <polygon points="90,-45 105,-52 120,-45 105,-38"/>
+    </g>
+    <!-- Diamond raised pattern - row 2 -->
+    <g fill="#e8ecf5" opacity="0.85">
+      <polygon points="-120,-15 -105,-22 -90,-15 -105,-8"/>
+      <polygon points="-80,-15 -65,-22 -50,-15 -65,-8"/>
+      <polygon points="-40,-15 -25,-22 -10,-15 -25,-8"/>
+      <polygon points="0,-15 15,-22 30,-15 15,-8"/>
+      <polygon points="40,-15 55,-22 70,-15 55,-8"/>
+      <polygon points="80,-15 95,-22 110,-15 95,-8"/>
+    </g>
+    <!-- Diamond raised pattern - row 3 -->
+    <g fill="#e8ecf5" opacity="0.85">
+      <polygon points="-110,15 -95,8 -80,15 -95,22"/>
+      <polygon points="-70,15 -55,8 -40,15 -55,22"/>
+      <polygon points="-30,15 -15,8 0,15 -15,22"/>
+      <polygon points="10,15 25,8 40,15 25,22"/>
+      <polygon points="50,15 65,8 80,15 65,22"/>
+      <polygon points="90,15 105,8 120,15 105,22"/>
+    </g>
+    <!-- Diamond raised pattern - row 4 -->
+    <g fill="#e8ecf5" opacity="0.85">
+      <polygon points="-120,45 -105,38 -90,45 -105,52"/>
+      <polygon points="-80,45 -65,38 -50,45 -65,52"/>
+      <polygon points="-40,45 -25,38 -10,45 -25,52"/>
+      <polygon points="0,45 15,38 30,45 15,52"/>
+      <polygon points="40,45 55,38 70,45 55,52"/>
+      <polygon points="80,45 95,38 110,45 95,52"/>
+    </g>
+    <!-- Plate edge 3D -->
+    <polygon points="-135,60 135,60 145,50 -125,50" fill="#6878a8" opacity="0.6"/>
+    <polygon points="135,-60 145,-70 145,50 135,60" fill="#7880b0" opacity="0.5"/>
+    <!-- Orange accent -->
+    <rect x="-135" y="-60" width="10" height="120" fill="#e05a1e" opacity="0.4" rx="1"/>
+  </g>
+  <rect x="0" y="255" width="400" height="45" fill="#000000" opacity="0.55"/>
+  <text x="200" y="283" font-family="Arial Black, sans-serif" font-size="15" font-weight="900" fill="#e05a1e" text-anchor="middle" letter-spacing="3">PLAT BORDES (CHECKER PLATE)</text>
+
+</svg>
