@@ -19,7 +19,7 @@
 </div>
 
 <form action="{{ isset($product) ? route('admin.products.update', $product->id) : route('admin.products.store') }}"
-      method="POST" id="productForm" novalidate>
+      method="POST" id="productForm" enctype="multipart/form-data" novalidate>
     @csrf
     @if(isset($product)) @method('PUT') @endif
 
@@ -76,11 +76,16 @@
                         @error('category')<span class="field-error">{{ $message }}</span>@enderror
                     </div>
                     <div class="form-group">
-                        <label for="icon">Ikon / Simbol</label>
-                        <input type="text" id="icon" name="icon"
-                               value="{{ old('icon', $product->icon ?? '') }}"
-                               placeholder="cth: Ø, H, L, C, ▬">
-                        <span class="field-hint">Karakter tunggal sebagai representasi visual produk</span>
+                        <label for="image">Gambar Produk</label>
+                        <input type="file" id="image" name="image" class="form-control">
+
+                        @if(isset($product) && $product->image)
+                            <div style="margin-top:10px;">
+                                <img src="{{ asset('images/products/' . $product->image) }}" 
+                                    width="120" 
+                                    style="border-radius:8px;">
+                            </div>
+                        @endif
                     </div>
                 </div>
 

@@ -23,7 +23,11 @@
         <div class="contact-info-top">
             <div class="contact-info-card">
                 <h4>Alamat</h4>
-                <p>Gedung Graha Pacific Lt. 8<br>Surabaya, Jawa Timur</p>
+                <p>
+                    <a href="https://maps.google.com/?q=Gedung+Graha+Pacific+Lt.+8,+Surabaya,+Jawa+Timur" target="_blank">
+                        Gedung Graha Pacific Lt. 8<br>Surabaya, Jawa Timur
+                    </a>
+                </p>
             </div>
             <div class="contact-info-card">
                 <h4>Kontak</h4>
