@@ -15,8 +15,9 @@ return new class extends Migration
             $table->string('name', 150);
             $table->string('slug', 120)->unique();
             $table->string('category', 80)->index();
-            $table->string('icon', 10)->nullable();
             $table->string('subtitle', 255);
+
+            $table->string('image', 255)->nullable();
 
             // Deskripsi utama
             $table->text('intro');

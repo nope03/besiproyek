@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class Product extends Model
@@ -14,8 +15,8 @@ class Product extends Model
         'name',
         'slug',
         'category',
-        'icon',
         'subtitle',
+        'image',          // ← nama file, disimpan di storage/app/public/products/
         'intro',
         'pengertian',
         'kesimpulan',
@@ -39,18 +40,60 @@ class Product extends Model
         'is_active'    => 'boolean',
     ];
 
-    // ── Auto-generate slug ────────────────────────────────────
-    protected static function boot()
+    // ── Boot: auto-generate slug ──────────────────────────────
+    protected static function boot(): void
     {
         parent::boot();
+
         static::creating(function ($product) {
             if (empty($product->slug)) {
                 $product->slug = Str::slug($product->name);
             }
         });
+
+        // Hapus file gambar lama saat produk dihapus
+        static::deleting(function ($product) {
+            $product->deleteImage();
+        });
     }
 
-    // ── Scopes ────────────────────────────────────────────────
+    // ── Image Helpers ─────────────────────────────────────────
+
+    /**
+     * URL gambar produk.
+     * Prioritas:
+     *   1. Gambar upload dari storage (image field di DB)
+     *   2. SVG ilustrasi default di public/images/products/{slug}.svg
+     */
+    public function getImageUrlAttribute(): string
+    {
+        if ($this->image && Storage::disk('public')->exists('products/' . $this->image)) {
+            return asset('storage/products/' . $this->image);
+        }
+
+        // Fallback ke SVG ilustrasi
+        return asset('images/products/' . $this->slug . '.svg');
+    }
+
+    /**
+     * Apakah produk punya gambar upload (bukan fallback SVG)?
+     */
+    public function hasUploadedImage(): bool
+    {
+        return $this->image && Storage::disk('public')->exists('products/' . $this->image);
+    }
+
+    /**
+     * Hapus file gambar dari storage.
+     */
+    public function deleteImage(): void
+    {
+        if ($this->image) {
+            Storage::disk('public')->delete('products/' . $this->image);
+        }
+    }
+
+    // ── Scopes ───────────────────────────────────────────────
     public function scopeActive($query)
     {
         return $query->where('is_active', true);

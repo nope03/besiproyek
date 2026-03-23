@@ -34,23 +34,39 @@
 
                 <!-- Intro -->
                 <div class="pd-section">
-                    <h2 class="pd-title">{{ strtoupper($product['name']) }}: Pengertian, Fungsi, Jenis, dan Ukuran Standar untuk Konstruksi</h2>
+                    <h2 class="pd-title">
+                        {{ strtoupper($product['name']) }}: Pengertian, Fungsi, Jenis, dan Ukuran Standar untuk Konstruksi
+                    </h2>
                     <p class="pd-lead">{{ $product['intro'] }}</p>
                 </div>
 
-                <!-- Pengertian + Product Image -->
+                <!-- Pengertian + Gambar -->
                 <div class="pd-section">
                     <h3 class="pd-heading">Pengertian</h3>
+
+                    {{-- Gambar produk: dari DB (upload) atau SVG fallback --}}
+                    @php
+                        // Jika $product adalah Eloquent model (dari DB)
+                        if (is_object($product) && method_exists($product, 'getAttribute')) {
+                            $imgUrl  = $product->image_url;
+                            $imgAlt  = $product->name;
+                        } else {
+                            // Array (dari ProductController static data)
+                            $slug    = $product['slug'];
+                            $imgUrl  = asset('images/products/' . $slug . '.svg');
+                            $imgAlt  = $product['name'];
+                        }
+                    @endphp
                     <div class="pd-image-wrap">
-                        <img
-                            src="{{ asset('images/products/' . $product['slug'] . '.svg') }}"
-                            alt="Ilustrasi {{ $product['name'] }}"
-                            class="pd-product-image"
-                            width="800"
-                            height="400"
-                            loading="lazy"
-                        >
+                        <img src="{{ $imgUrl }}"
+                             alt="Ilustrasi {{ $imgAlt }}"
+                             class="pd-product-image"
+                             width="800"
+                             height="420"
+                             loading="lazy"
+                             onerror="this.onerror=null; this.src='{{ asset('images/products/' . ($product['slug'] ?? $product->slug ?? 'besi-beton') . '.svg') }}'">
                     </div>
+
                     <p>{{ $product['pengertian'] }}</p>
                 </div>
 
@@ -95,7 +111,9 @@
                         </li>
                         @endforeach
                     </ul>
-                    <p class="pd-keunggulan-note">Dengan keunggulan tersebut, {{ $product['name'] }} menjadi komponen penting pada proyek konstruksi modern.</p>
+                    <p class="pd-keunggulan-note">
+                        Dengan keunggulan tersebut, {{ $product['name'] }} menjadi komponen penting pada proyek konstruksi modern.
+                    </p>
                 </div>
 
                 <!-- Ukuran Standar -->
@@ -140,21 +158,20 @@
                     <a href="{{ url('/contact-us') }}" class="btn btn--ghost">Contact Us →</a>
                 </div>
 
-            </div>
+            </div><!-- /.product-detail-main -->
 
             <!-- ── Sidebar ────────────────────────────────── -->
             <aside class="product-detail-sidebar">
 
-                <!-- Product Image (sidebar) -->
+                <!-- Gambar di sidebar -->
                 <div class="sidebar-card sidebar-card--image">
-                    <img
-                        src="{{ asset('images/products/' . $product['slug'] . '.svg') }}"
-                        alt="{{ $product['name'] }}"
-                        class="sidebar-product-image"
-                        width="300"
-                        height="200"
-                        loading="lazy"
-                    >
+                    <img src="{{ $imgUrl }}"
+                         alt="{{ $imgAlt }}"
+                         class="sidebar-product-image"
+                         width="300"
+                         height="200"
+                         loading="lazy"
+                         onerror="this.onerror=null; this.src='{{ asset('images/products/' . ($product['slug'] ?? $product->slug ?? 'besi-beton') . '.svg') }}'">
                 </div>
 
                 <!-- Spesifikasi -->
@@ -170,11 +187,11 @@
                     </table>
                 </div>
 
-                <!-- CTA -->
+                <!-- WhatsApp CTA -->
                 <div class="sidebar-card sidebar-card--cta">
                     <h4>Minta Penawaran</h4>
                     <p>Tim kami siap membantu Anda mendapatkan harga terbaik dan ketersediaan stok.</p>
-                    <a href="https://wa.me/6281130556500?text=Halo%20kak,%20saya%20butuh%20informasi%20mengenai%20{{ urlencode($product['name']) }}."
+                    <a href="https://wa.me/6281130556500?text=Halo%20kak,%20saya%20butuh%20{{ urlencode($product['name']) }}."
                        target="_blank" rel="noopener" class="btn btn--primary btn--full">
                         💬 WhatsApp Kami
                     </a>
@@ -184,42 +201,44 @@
                     </div>
                 </div>
 
-                <!-- Other Products Navigation -->
+                <!-- Navigasi Produk Lain + thumbnail -->
                 <div class="sidebar-card">
                     <h4>Produk Lainnya</h4>
                     <ul class="sidebar-nav">
                         @php
                         $navProducts = [
-                            ['slug'=>'besi-beton','name'=>'Besi Beton'],
-                            ['slug'=>'besi-siku','name'=>'Besi Siku'],
-                            ['slug'=>'besi-virkan','name'=>'Besi Virkan (WF)'],
-                            ['slug'=>'h-beam','name'=>'H-Beam'],
-                            ['slug'=>'unp','name'=>'Kanal UNP'],
-                            ['slug'=>'cnp','name'=>'Kanal CNP'],
-                            ['slug'=>'plat-hitam','name'=>'Plat Hitam'],
-                            ['slug'=>'plat-bordes','name'=>'Plat Bordes'],
-                            ['slug'=>'pipa-galvanis','name'=>'Pipa Galvanis'],
-                            ['slug'=>'pipa-stainless','name'=>'Pipa Stainless Steel'],
-                            ['slug'=>'hollow-hitam','name'=>'Hollow Hitam'],
-                            ['slug'=>'hollow-galvalum','name'=>'Hollow Galvalum'],
-                            ['slug'=>'atap-galvalum','name'=>'Atap Galvalum'],
-                            ['slug'=>'canal-galvalum','name'=>'Canal Galvalum'],
-                            ['slug'=>'wiremesh','name'=>'Wiremesh'],
-                            ['slug'=>'pagar-brc','name'=>'Pagar BRC'],
-                            ['slug'=>'bondek','name'=>'Bondek'],
-                            ['slug'=>'angkur','name'=>'Angkur'],
-                            ['slug'=>'mur-baut','name'=>'Mur dan Baut'],
-                            ['slug'=>'kawat','name'=>'Kawat Duri & Harmonika'],
+                            ['slug'=>'besi-beton',      'name'=>'Besi Beton'],
+                            ['slug'=>'besi-siku',       'name'=>'Besi Siku'],
+                            ['slug'=>'besi-virkan',     'name'=>'Besi Virkan (WF)'],
+                            ['slug'=>'h-beam',          'name'=>'H-Beam'],
+                            ['slug'=>'unp',             'name'=>'Kanal UNP'],
+                            ['slug'=>'cnp',             'name'=>'Kanal CNP'],
+                            ['slug'=>'plat-hitam',      'name'=>'Plat Hitam'],
+                            ['slug'=>'plat-bordes',     'name'=>'Plat Bordes'],
+                            ['slug'=>'pipa-galvanis',   'name'=>'Pipa Galvanis'],
+                            ['slug'=>'pipa-stainless',  'name'=>'Pipa Stainless Steel'],
+                            ['slug'=>'hollow-hitam',    'name'=>'Hollow Hitam'],
+                            ['slug'=>'hollow-galvalum', 'name'=>'Hollow Galvalum'],
+                            ['slug'=>'atap-galvalum',   'name'=>'Atap Galvalum'],
+                            ['slug'=>'canal-galvalum',  'name'=>'Canal Galvalum'],
+                            ['slug'=>'wiremesh',        'name'=>'Wiremesh'],
+                            ['slug'=>'pagar-brc',       'name'=>'Pagar BRC'],
+                            ['slug'=>'bondek',          'name'=>'Bondek'],
+                            ['slug'=>'angkur',          'name'=>'Angkur'],
+                            ['slug'=>'mur-baut',        'name'=>'Mur dan Baut'],
+                            ['slug'=>'kawat',           'name'=>'Kawat Duri & Harmonika'],
                         ];
+                        $currentSlug = is_object($product) ? $product->slug : $product['slug'];
                         @endphp
                         @foreach($navProducts as $nav)
-                        @if($nav['slug'] !== $product['slug'])
+                        @if($nav['slug'] !== $currentSlug)
                         <li>
                             <a href="{{ url('/product/' . $nav['slug']) }}">
                                 <img src="{{ asset('images/products/' . $nav['slug'] . '.svg') }}"
                                      alt="{{ $nav['name'] }}"
                                      class="sidebar-nav-thumb"
-                                     width="36" height="24" loading="lazy">
+                                     width="44" height="30"
+                                     loading="lazy">
                                 {{ $nav['name'] }}
                             </a>
                         </li>
@@ -229,6 +248,7 @@
                 </div>
 
             </aside>
+
         </div>
     </div>
 </section>
