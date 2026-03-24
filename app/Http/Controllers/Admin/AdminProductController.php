@@ -261,4 +261,13 @@ class AdminProductController extends Controller
             'is_active'    => $request->boolean('is_active'),
         ];
     }
+    public function toggleFeatured(Product $product)
+    {
+        $product->update([
+            'is_featured' => !$product->is_featured
+        ]);
+
+        $status = $product->is_featured ? 'berhasil dijadikan produk unggulan' : 'dihapus dari produk unggulan';
+        return redirect()->back()->with('success', "Produk {$product->name} {$status}.");
+    }
 }
