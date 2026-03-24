@@ -59,3 +59,4 @@ Route::prefix('admin')->name('admin.')->group(function () {
     });
 
 });
+Route::patch('admin/products/{product}/toggle-featured', [\App\Http\Controllers\Admin\AdminProductController::class, 'toggleFeatured'])->name('admin.products.toggle-featured');

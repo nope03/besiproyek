@@ -28,6 +28,7 @@ class Product extends Model
         'tabel_data',
         'spesifikasi',
         'is_active',
+        'is_featured',
     ];
 
     protected $casts = [
@@ -38,6 +39,7 @@ class Product extends Model
         'tabel_data'   => 'array',
         'spesifikasi'  => 'array',
         'is_active'    => 'boolean',
+        'is_featured' => 'boolean',
     ];
 
     // ── Boot: auto-generate slug ──────────────────────────────

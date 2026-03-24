@@ -84,10 +84,24 @@
                     <td class="table-date">{{ $product->created_at->format('d M Y') }}</td>
                     <td>
                         <div class="table-actions">
+                            <form action="{{ route('admin.products.toggle-featured', $product) }}" method="POST" style="margin: 0; padding: 0;">
+                                @csrf
+                                @method('PATCH')
+                                <button type="submit" 
+                                        class="table-btn" 
+                                        style="color: {{ $product->is_featured ? '#eab308' : '#9ca3af' }}; padding: 0.35rem; display: flex; align-items: center; justify-content: center;"
+                                        title="{{ $product->is_featured ? 'Hapus dari Unggulan' : 'Jadikan Unggulan' }}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="{{ $product->is_featured ? 'currentColor' : 'none' }}" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                                    </svg>
+                                </button>
+                            </form>
+
                             <a href="{{ route('admin.products.edit', $product->slug) }}" class="table-btn table-btn--edit" title="Edit">✏ Edit</a>
                             <a href="{{ url('/product/' . $product->slug) }}" target="_blank" class="table-btn table-btn--view" title="Lihat">↗</a>
+                            
                             <form action="{{ route('admin.products.destroy', $product->id) }}" method="POST"
-                                  onsubmit="return confirm('Hapus produk {{ addslashes($product->name) }}? Tindakan ini tidak dapat dibatalkan.')">
+                                onsubmit="return confirm('Hapus produk {{ addslashes($product->name) }}? Tindakan ini tidak dapat dibatalkan.')">
                                 @csrf @method('DELETE')
                                 <button type="submit" class="table-btn table-btn--delete" title="Hapus">🗑</button>
                             </form>
