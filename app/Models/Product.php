@@ -67,29 +67,36 @@ class Product extends Model
      */
     public function getImageUrlAttribute(): string
     {
-        if ($this->image && Storage::disk('public')->exists('products/' . $this->image)) {
+        if ($this->hasUploadedImage()) {
             return asset('storage/products/' . $this->image);
         }
-
-        // Fallback ke SVG ilustrasi
+        
+        // Fallback ke SVG default
         return asset('images/products/' . $this->slug . '.svg');
     }
 
     /**
      * Apakah produk punya gambar upload (bukan fallback SVG)?
      */
+    // app/Models/Product.php
     public function hasUploadedImage(): bool
     {
-        return $this->image && Storage::disk('public')->exists('products/' . $this->image);
+        if (empty($this->image)) {
+            return false;
+        }
+        
+        $path = storage_path('app/public/products/' . $this->image);
+        return file_exists($path);
     }
 
-    /**
-     * Hapus file gambar dari storage.
-     */
     public function deleteImage(): void
     {
-        if ($this->image) {
-            Storage::disk('public')->delete('products/' . $this->image);
+        if ($this->hasUploadedImage()) {
+            $path = storage_path('app/public/products/' . $this->image);
+            if (file_exists($path)) {
+                unlink($path);
+                \Log::info('Image deleted: ' . $path);
+            }
         }
     }
 

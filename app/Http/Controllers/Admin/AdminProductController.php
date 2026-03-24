@@ -41,14 +41,19 @@ class AdminProductController extends Controller
     }
 
     // ── Store ─────────────────────────────────────────────────
+    // BUG FIX: method store() sebelumnya memanggil $product->deleteImage() padahal
+    // variabel $product belum didefinisikan (ini create bukan edit).
+    // Perbaikan: handle image upload langsung tanpa menyentuh $product.
     public function store(Request $request)
     {
         $validated = $this->validateProduct($request);
         $data      = $this->prepareData($request, $validated);
 
-        // Handle image upload
+        // Handle image upload — tidak ada $product di sini karena ini CREATE
         if ($request->hasFile('image')) {
             $data['image'] = $this->uploadImage($request->file('image'), $data['slug']);
+        } else {
+            $data['image'] = null;
         }
 
         Product::create($data);
@@ -70,28 +75,36 @@ class AdminProductController extends Controller
     }
 
     // ── Update ────────────────────────────────────────────────
+    // BUG FIX: Sebelumnya menggunakan Product::where('id', $id)->update($data)
+    // yang merupakan mass update via Query Builder — ini BYPASS Eloquent model
+    // events dan juga TIDAK bisa meng-cast JSON fields (fungsi, jenis, dll)
+    // karena data array tidak di-serialize otomatis.
+    // Perbaikan: gunakan $product->fill($data)->save() via Eloquent model instance.
     public function update(Request $request, int $id)
     {
-        $product   = Product::findOrFail($id);
+        $product = Product::findOrFail($id);
+
         $validated = $this->validateProduct($request, $product->id);
         $data      = $this->prepareData($request, $validated);
 
         // Handle image upload/replace
         if ($request->hasFile('image')) {
-            // Hapus gambar lama jika ada
-            $product->deleteImage();
-            // Upload gambar baru
+            if ($product->hasUploadedImage()) {
+                $product->deleteImage();
+            }
             $data['image'] = $this->uploadImage($request->file('image'), $data['slug']);
         } elseif ($request->boolean('remove_image')) {
-            // Admin pilih hapus gambar tanpa ganti
-            $product->deleteImage();
+            if ($product->hasUploadedImage()) {
+                $product->deleteImage();
+            }
             $data['image'] = null;
         } else {
-            // Tidak ada perubahan gambar — pertahankan yang lama
+            // Tidak ada perubahan gambar — pertahankan gambar lama
             $data['image'] = $product->image;
         }
 
-        $product->update($data);
+        // Gunakan Eloquent fill+save agar cast JSON (array) bekerja dengan benar
+        $product->fill($data)->save();
 
         return redirect()->route('admin.products.index')
             ->with('success', "Produk \"{$product->name}\" berhasil diperbarui.");
@@ -112,26 +125,18 @@ class AdminProductController extends Controller
     {
         $product = Product::findOrFail($id);
         $name    = $product->name;
-        // Model boot() akan otomatis hapus file gambar
-        $product->delete();
+        $product->delete(); // Model event 'deleting' akan hapus gambar otomatis
 
         return redirect()->route('admin.products.index')
             ->with('success', "Produk \"{$name}\" berhasil dihapus.");
     }
 
     // ── Private: Upload Image ─────────────────────────────────
-    /**
-     * Upload gambar produk ke storage/app/public/products/
-     * Format nama file: {slug}-{timestamp}.{ext}
-     * Ukuran max: 2MB, format: jpg/jpeg/png/webp
-     */
     private function uploadImage($file, string $slug): string
     {
-        // Sanitize filename
         $ext      = $file->getClientOriginalExtension();
         $filename = $slug . '-' . time() . '.' . $ext;
 
-        // Simpan ke storage/app/public/products/
         $file->storeAs('products', $filename, 'public');
 
         return $filename;
@@ -148,7 +153,6 @@ class AdminProductController extends Controller
             'category'     => 'required|string|max:80',
             'subtitle'     => 'required|string|max:255',
 
-            // Gambar: opsional, max 2MB, format jpg/png/webp
             'image'        => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
             'remove_image' => 'nullable|boolean',
 
@@ -176,22 +180,22 @@ class AdminProductController extends Controller
             'spesifikasi_key' => 'nullable|array',
             'spesifikasi_val' => 'nullable|array',
         ], [
-            'name.required'        => 'Nama produk wajib diisi.',
-            'slug.required'        => 'Slug wajib diisi.',
-            'slug.unique'          => 'Slug sudah digunakan produk lain.',
-            'category.required'    => 'Kategori wajib dipilih.',
-            'subtitle.required'    => 'Subtitle wajib diisi.',
-            'image.image'          => 'File harus berupa gambar.',
-            'image.mimes'          => 'Format gambar harus JPG, PNG, atau WebP.',
-            'image.max'            => 'Ukuran gambar maksimal 2 MB.',
-            'intro.required'       => 'Paragraf intro wajib diisi.',
-            'pengertian.required'  => 'Pengertian wajib diisi.',
-            'kesimpulan.required'  => 'Kesimpulan wajib diisi.',
-            'fungsi.required'      => 'Minimal satu fungsi harus diisi.',
-            'jenis.required'       => 'Minimal satu jenis harus diisi.',
-            'keunggulan.required'  => 'Minimal satu keunggulan harus diisi.',
-            'tabel_header.required'=> 'Header tabel harus diisi.',
-            'tabel_data.required'  => 'Data tabel harus diisi.',
+            'name.required'         => 'Nama produk wajib diisi.',
+            'slug.required'         => 'Slug wajib diisi.',
+            'slug.unique'           => 'Slug sudah digunakan produk lain.',
+            'category.required'     => 'Kategori wajib dipilih.',
+            'subtitle.required'     => 'Subtitle wajib diisi.',
+            'image.image'           => 'File harus berupa gambar.',
+            'image.mimes'           => 'Format gambar harus JPG, PNG, atau WebP.',
+            'image.max'             => 'Ukuran gambar maksimal 2 MB.',
+            'intro.required'        => 'Paragraf intro wajib diisi.',
+            'pengertian.required'   => 'Pengertian wajib diisi.',
+            'kesimpulan.required'   => 'Kesimpulan wajib diisi.',
+            'fungsi.required'       => 'Minimal satu fungsi harus diisi.',
+            'jenis.required'        => 'Minimal satu jenis harus diisi.',
+            'keunggulan.required'   => 'Minimal satu keunggulan harus diisi.',
+            'tabel_header.required' => 'Header tabel harus diisi.',
+            'tabel_data.required'   => 'Data tabel harus diisi.',
         ]);
     }
 
@@ -236,7 +240,7 @@ class AdminProductController extends Controller
             'slug'         => $slug,
             'category'     => $validated['category'],
             'subtitle'     => $validated['subtitle'],
-            // 'image' dihandle terpisah di store()/update()
+            // 'image' TIDAK di-set di sini — dihandle di store() dan update()
             'intro'        => $validated['intro'],
             'pengertian'   => $validated['pengertian'],
             'kesimpulan'   => $validated['kesimpulan'],
