@@ -19,8 +19,7 @@
         <form action="{{ route('admin.products.index') }}" method="GET" class="filter-form">
             <div class="filter-form__row">
                 <div class="filter-form__search">
-                    <input type="text" name="search" value="{{ request('search') }}"
-                           placeholder="Cari nama produk...">
+                    <input type="text" id="searchInput" placeholder="Cari produk..." class="form-control">
                     <button type="submit" class="search-btn">🔍</button>
                 </div>
                 <div class="filter-form__selects">
@@ -60,7 +59,7 @@
                     <th style="width:140px">Aksi</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="tableBody">
                 @foreach($products as $i => $product)
                 <tr>
                     <td class="table-num">{{ $products->firstItem() + $i }}</td>
@@ -125,5 +124,35 @@
         @endif
     </div>
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Ambil elemen input pencarian dan isi tabel
+        const searchInput = document.getElementById('searchInput');
+        const tableBody = document.getElementById('tableBody');
+        
+        // Pastikan kedua elemen ditemukan
+        if (searchInput && tableBody) {
+            const rows = tableBody.getElementsByTagName('tr');
+
+            searchInput.addEventListener('keyup', function() {
+                // Ubah teks pencarian menjadi huruf kecil semua agar tidak case-sensitive
+                const filterText = this.value.toLowerCase();
+
+                // Looping semua baris di dalam tabel
+                for (let i = 0; i < rows.length; i++) {
+                    // Ambil seluruh teks di dalam satu baris tersebut
+                    let rowText = rows[i].textContent || rows[i].innerText;
+                    
+                    // Jika teks baris cocok dengan kata kunci, tampilkan. Jika tidak, sembunyikan.
+                    if (rowText.toLowerCase().indexOf(filterText) > -1) {
+                        rows[i].style.display = '';
+                    } else {
+                        rows[i].style.display = 'none';
+                    }
+                }
+            });
+        }
+    });
+</script>
 
 @endsection
