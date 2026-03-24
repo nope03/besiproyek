@@ -529,11 +529,33 @@ document.querySelectorAll('textarea').forEach(ta => {
 });
 
 // ── Confirm leave if dirty ────────────────────────────
-let formDirty = false;
+// BUG FIX: Tombol "Simpan" berada di LUAR <form> (form="productForm").
+// Di Chrome/Edge, klik tombol eksternal memicu `beforeunload` SEBELUM
+// event `submit` form terpanggil — akibatnya formDirty masih true dan
+// browser menampilkan dialog "tinggalkan halaman?" yang memblokir submit.
+//
+// Solusi: tambahkan flag `isSubmitting` yang di-set langsung saat tombol
+// diklik, sehingga `beforeunload` tahu untuk tidak memblokir navigasi ini.
+let formDirty    = false;
+let isSubmitting = false;
+
 document.getElementById('productForm').addEventListener('input', () => formDirty = true);
-window.addEventListener('beforeunload', e => {
-    if (formDirty) { e.preventDefault(); e.returnValue = ''; }
+
+// Set flag saat TOMBOL diklik (terjadi sebelum beforeunload)
+document.querySelectorAll('[form="productForm"][type="submit"]').forEach(btn => {
+    btn.addEventListener('click', () => { isSubmitting = true; });
 });
-document.getElementById('productForm').addEventListener('submit', () => { formDirty = false; });
+
+document.getElementById('productForm').addEventListener('submit', () => {
+    isSubmitting = true;
+    formDirty    = false;
+});
+
+window.addEventListener('beforeunload', e => {
+    if (formDirty && !isSubmitting) {
+        e.preventDefault();
+        e.returnValue = '';
+    }
+});
 </script>
 @endpush

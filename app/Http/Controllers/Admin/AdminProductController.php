@@ -160,7 +160,11 @@ class AdminProductController extends Controller
             'pengertian'   => 'required|string',
             'kesimpulan'   => 'required|string',
             'ukuran_intro' => 'nullable|string|max:500',
-            'is_active'    => 'nullable',
+            // BUG FIX: Sebelumnya 'nullable' saja — bermasalah ketika form mengirim
+            // dua nilai is_active sekaligus (hidden "0" + checkbox "1").
+            // Laravel's $request->boolean() di prepareData() sudah menangani ini
+            // dengan benar, jadi validasi cukup menerima nilai yang masuk akal.
+            'is_active'    => 'nullable|in:0,1',
 
             'fungsi'           => 'required|array|min:1',
             'fungsi.*.judul'   => 'required|string|max:200',

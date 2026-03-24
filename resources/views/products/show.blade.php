@@ -1,6 +1,29 @@
 @extends('layouts.app')
 
-@section('title', $product['title'] . ' – PT Mitra Abadi Metalindo')
+@php
+    // Normalisasi: pastikan $product bisa diakses sebagai array
+    // baik dari Eloquent model maupun static array (ProductController lama)
+    if (is_object($product) && method_exists($product, 'toArray')) {
+        $p = $product->toArray();
+        // Kembalikan field JSON yang sudah di-cast sebagai array (sudah benar dari model)
+        $p['fungsi']       = $product->fungsi       ?? [];
+        $p['jenis']        = $product->jenis         ?? [];
+        $p['keunggulan']   = $product->keunggulan    ?? [];
+        $p['tabel_header'] = $product->tabel_header  ?? [];
+        $p['tabel_data']   = $product->tabel_data    ?? [];
+        $p['spesifikasi']  = $product->spesifikasi   ?? [];
+        $p['title']        = $product->name; // model tidak punya field 'title', fallback ke name
+        $imgUrl            = $product->image_url;
+        $imgAlt            = $product->name;
+    } else {
+        $p      = $product;
+        $slug   = $p['slug'];
+        $imgUrl = asset('images/products/' . $slug . '.svg');
+        $imgAlt = $p['name'];
+    }
+@endphp
+
+@section('title', ($p['title'] ?? $p['name']) . ' – PT Mitra Abadi Metalindo')
 
 @section('content')
 
@@ -16,11 +39,11 @@
             <span>/</span>
             <a href="{{ url('/product') }}">Product</a>
             <span>/</span>
-            <span>{{ $product['name'] }}</span>
+            <span>{{ $p['name'] }}</span>
         </div>
-        <span class="section-tag">// {{ strtoupper($product['category']) }}</span>
-        <h1 class="page-hero__title">{{ $product['name'] }}</h1>
-        <p class="page-hero__sub">{{ $product['subtitle'] }}</p>
+        <span class="section-tag">// {{ strtoupper($p['category']) }}</span>
+        <h1 class="page-hero__title">{{ $p['name'] }}</h1>
+        <p class="page-hero__sub">{{ $p['subtitle'] }}</p>
     </div>
 </div>
 
@@ -35,47 +58,30 @@
                 <!-- Intro -->
                 <div class="pd-section">
                     <h2 class="pd-title">
-                        {{ strtoupper($product['name']) }}: Pengertian, Fungsi, Jenis, dan Ukuran Standar untuk Konstruksi
+                        {{ strtoupper($p['name']) }}: Pengertian, Fungsi, Jenis, dan Ukuran Standar untuk Konstruksi
                     </h2>
-                    <p class="pd-lead">{{ $product['intro'] }}</p>
+                    <p class="pd-lead">{{ $p['intro'] }}</p>
                 </div>
 
                 <!-- Pengertian + Gambar -->
                 <div class="pd-section">
                     <h3 class="pd-heading">Pengertian</h3>
-
-                    {{-- Gambar produk: dari DB (upload) atau SVG fallback --}}
-                    @php
-                        // Jika $product adalah Eloquent model (dari DB)
-                        if (is_object($product) && method_exists($product, 'getAttribute')) {
-                            $imgUrl  = $product->image_url;
-                            $imgAlt  = $product->name;
-                        } else {
-                            // Array (dari ProductController static data)
-                            $slug    = $product['slug'];
-                            $imgUrl  = asset('images/products/' . $slug . '.svg');
-                            $imgAlt  = $product['name'];
-                        }
-                    @endphp
                     <div class="pd-image-wrap">
                         <img src="{{ $imgUrl }}"
                              alt="Ilustrasi {{ $imgAlt }}"
                              class="pd-product-image"
-                             width="800"
-                             height="420"
-                             loading="lazy"
-                             onerror="this.onerror=null; this.src='{{ asset('images/products/' . ($product['slug'] ?? $product->slug ?? 'besi-beton') . '.svg') }}'">
+                             width="800" height="420" loading="lazy"
+                             onerror="this.onerror=null; this.src='{{ asset('images/products/' . ($p['slug'] ?? 'besi-beton') . '.svg') }}'">
                     </div>
-
-                    <p>{{ $product['pengertian'] }}</p>
+                    <p>{{ $p['pengertian'] }}</p>
                 </div>
 
                 <!-- Fungsi -->
                 <div class="pd-section">
                     <h3 class="pd-heading">Fungsi dalam Sistem Struktur</h3>
-                    <p class="pd-section-intro">{{ $product['name'] }} memiliki beberapa fungsi utama dalam konstruksi:</p>
+                    <p class="pd-section-intro">{{ $p['name'] }} memiliki beberapa fungsi utama dalam konstruksi:</p>
                     <div class="pd-fungsi-list">
-                        @foreach($product['fungsi'] as $i => $f)
+                        @foreach($p['fungsi'] as $i => $f)
                         <div class="pd-fungsi-item">
                             <div class="pd-fungsi-num">{{ $i + 1 }}</div>
                             <div class="pd-fungsi-body">
@@ -89,9 +95,9 @@
 
                 <!-- Jenis -->
                 <div class="pd-section">
-                    <h3 class="pd-heading">Jenis–Jenis {{ $product['name'] }}</h3>
+                    <h3 class="pd-heading">Jenis–Jenis {{ $p['name'] }}</h3>
                     <div class="pd-jenis-grid">
-                        @foreach($product['jenis'] as $j)
+                        @foreach($p['jenis'] as $j)
                         <div class="pd-jenis-card">
                             <h5>{{ $j['nama'] }}</h5>
                             <p>{{ $j['deskripsi'] }}</p>
@@ -102,9 +108,9 @@
 
                 <!-- Keunggulan -->
                 <div class="pd-section">
-                    <h3 class="pd-heading">Keunggulan {{ $product['name'] }}</h3>
+                    <h3 class="pd-heading">Keunggulan {{ $p['name'] }}</h3>
                     <ul class="pd-keunggulan-list">
-                        @foreach($product['keunggulan'] as $k)
+                        @foreach($p['keunggulan'] as $k)
                         <li>
                             <span class="pd-check">✓</span>
                             <span>{{ $k }}</span>
@@ -112,25 +118,27 @@
                         @endforeach
                     </ul>
                     <p class="pd-keunggulan-note">
-                        Dengan keunggulan tersebut, {{ $product['name'] }} menjadi komponen penting pada proyek konstruksi modern.
+                        Dengan keunggulan tersebut, {{ $p['name'] }} menjadi komponen penting pada proyek konstruksi modern.
                     </p>
                 </div>
 
                 <!-- Ukuran Standar -->
                 <div class="pd-section">
                     <h3 class="pd-heading">Ukuran Standar</h3>
-                    <p>{{ $product['ukuran_intro'] }}</p>
+                    @if(!empty($p['ukuran_intro']))
+                    <p>{{ $p['ukuran_intro'] }}</p>
+                    @endif
                     <div class="pd-table-wrap">
                         <table class="pd-table">
                             <thead>
                                 <tr>
-                                    @foreach($product['tabel_header'] as $h)
+                                    @foreach($p['tabel_header'] as $h)
                                     <th>{{ $h }}</th>
                                     @endforeach
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($product['tabel_data'] as $row)
+                                @foreach($p['tabel_data'] as $row)
                                 <tr>
                                     @foreach($row as $cell)
                                     <td>{{ $cell }}</td>
@@ -145,13 +153,13 @@
                 <!-- Kesimpulan -->
                 <div class="pd-section pd-section--conclusion">
                     <h3 class="pd-heading">Kesimpulan</h3>
-                    <p>{{ $product['kesimpulan'] }}</p>
+                    <p>{{ $p['kesimpulan'] }}</p>
                 </div>
 
                 <!-- CTA -->
                 <div class="pd-cta">
-                    <p>Butuh <strong>{{ $product['name'] }}</strong> untuk proyek Anda? Hubungi kami untuk konsultasi dan penawaran harga terbaik.</p>
-                    <a href="https://wa.me/6281130556500?text=Halo%20kak,%20saya%20butuh%20informasi%20mengenai%20{{ urlencode($product['name']) }}%20untuk%20proyek%20saya."
+                    <p>Butuh <strong>{{ $p['name'] }}</strong> untuk proyek Anda? Hubungi kami untuk konsultasi dan penawaran harga terbaik.</p>
+                    <a href="https://wa.me/6281130556500?text=Halo%20kak,%20saya%20butuh%20informasi%20mengenai%20{{ urlencode($p['name']) }}%20untuk%20proyek%20saya."
                        target="_blank" rel="noopener" class="btn btn--primary">
                         💬 Tanya via WhatsApp
                     </a>
@@ -168,17 +176,16 @@
                     <img src="{{ $imgUrl }}"
                          alt="{{ $imgAlt }}"
                          class="sidebar-product-image"
-                         width="300"
-                         height="200"
-                         loading="lazy"
-                         onerror="this.onerror=null; this.src='{{ asset('images/products/' . ($product['slug'] ?? $product->slug ?? 'besi-beton') . '.svg') }}'">
+                         width="300" height="200" loading="lazy"
+                         onerror="this.onerror=null; this.src='{{ asset('images/products/' . ($p['slug'] ?? 'besi-beton') . '.svg') }}'">
                 </div>
 
                 <!-- Spesifikasi -->
+                @if(!empty($p['spesifikasi']))
                 <div class="sidebar-card">
                     <h4>Spesifikasi Singkat</h4>
                     <table class="spec-table">
-                        @foreach($product['spesifikasi'] as $key => $val)
+                        @foreach($p['spesifikasi'] as $key => $val)
                         <tr>
                             <th>{{ $key }}</th>
                             <td>{{ $val }}</td>
@@ -186,12 +193,13 @@
                         @endforeach
                     </table>
                 </div>
+                @endif
 
                 <!-- WhatsApp CTA -->
                 <div class="sidebar-card sidebar-card--cta">
                     <h4>Minta Penawaran</h4>
                     <p>Tim kami siap membantu Anda mendapatkan harga terbaik dan ketersediaan stok.</p>
-                    <a href="https://wa.me/6281130556500?text=Halo%20kak,%20saya%20butuh%20{{ urlencode($product['name']) }}."
+                    <a href="https://wa.me/6281130556500?text=Halo%20kak,%20saya%20butuh%20{{ urlencode($p['name']) }}."
                        target="_blank" rel="noopener" class="btn btn--primary btn--full">
                         💬 WhatsApp Kami
                     </a>
@@ -201,7 +209,7 @@
                     </div>
                 </div>
 
-                <!-- Navigasi Produk Lain + thumbnail -->
+                <!-- Navigasi Produk Lain -->
                 <div class="sidebar-card">
                     <h4>Produk Lainnya</h4>
                     <ul class="sidebar-nav">
@@ -228,7 +236,7 @@
                             ['slug'=>'mur-baut',        'name'=>'Mur dan Baut'],
                             ['slug'=>'kawat',           'name'=>'Kawat Duri & Harmonika'],
                         ];
-                        $currentSlug = is_object($product) ? $product->slug : $product['slug'];
+                        $currentSlug = $p['slug'];
                         @endphp
                         @foreach($navProducts as $nav)
                         @if($nav['slug'] !== $currentSlug)
@@ -237,8 +245,7 @@
                                 <img src="{{ asset('images/products/' . $nav['slug'] . '.svg') }}"
                                      alt="{{ $nav['name'] }}"
                                      class="sidebar-nav-thumb"
-                                     width="44" height="30"
-                                     loading="lazy">
+                                     width="44" height="30" loading="lazy">
                                 {{ $nav['name'] }}
                             </a>
                         </li>
