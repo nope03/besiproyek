@@ -23,6 +23,16 @@
 
 <form action="{{ isset($product) ? route('admin.products.update', $product->id) : route('admin.products.store') }}"
       method="POST" id="productForm" enctype="multipart/form-data" novalidate>
+      @if ($errors->any())
+    <div style="background-color: #f8d7da; color: #721c24; padding: 15px; margin-bottom: 20px; border-radius: 5px;">
+        <strong>Oops! Ada kesalahan:</strong>
+        <ul style="margin-top: 10px; margin-bottom: 0;">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
     @csrf
     @if(isset($product)) @method('PUT') @endif
 
@@ -543,12 +553,11 @@ document.getElementById('productForm').addEventListener('input', () => formDirty
 
 // Set flag saat TOMBOL diklik (terjadi sebelum beforeunload)
 document.querySelectorAll('[form="productForm"][type="submit"]').forEach(btn => {
-    btn.addEventListener('click', () => { isSubmitting = true; });
+    btn.addEventListener('mousedown', () => { isSubmitting = true; });
 });
 
 document.getElementById('productForm').addEventListener('submit', () => {
     isSubmitting = true;
-    formDirty    = false;
 });
 
 window.addEventListener('beforeunload', e => {

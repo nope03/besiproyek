@@ -145,6 +145,9 @@ class AdminProductController extends Controller
     // ── Private: Validate ─────────────────────────────────────
     private function validateProduct(Request $request, ?int $ignoreId = null): array
     {
+        if (!$request->filled('slug') && $request->filled('name')) {
+            $request->merge(['slug' => Str::slug($request->input('name'))]);
+        }
         $slugRule = 'required|string|max:120|unique:products,slug' . ($ignoreId ? ",{$ignoreId}" : '');
 
         return $request->validate([
@@ -166,20 +169,20 @@ class AdminProductController extends Controller
             // dengan benar, jadi validasi cukup menerima nilai yang masuk akal.
             'is_active'    => 'nullable|in:0,1',
 
-            'fungsi'           => 'required|array|min:1',
-            'fungsi.*.judul'   => 'required|string|max:200',
-            'fungsi.*.isi'     => 'required|string',
+            'fungsi'           => 'nullable|array|min:1',
+            'fungsi.*.judul'   => 'nullable|string|max:200',
+            'fungsi.*.isi'     => 'nullable|string',
 
-            'jenis'              => 'required|array|min:1',
-            'jenis.*.nama'       => 'required|string|max:200',
-            'jenis.*.deskripsi'  => 'required|string',
+            'jenis'              => 'nullable|array|min:1',
+            'jenis.*.nama'       => 'nullable|string|max:200',
+            'jenis.*.deskripsi'  => 'nullable|string',
 
-            'keunggulan'   => 'required|array|min:1',
-            'keunggulan.*' => 'required|string|max:300',
+            'keunggulan'   => 'nullable|array|min:1',
+            'keunggulan.*' => 'nullable|string|max:300',
 
-            'tabel_header'   => 'required|array|min:1',
-            'tabel_header.*' => 'required|string|max:100',
-            'tabel_data'     => 'required|array|min:1',
+            'tabel_header'   => 'nullable|array|min:1',
+            'tabel_header.*' => 'nullable|string|max:100',
+            'tabel_data'     => 'nullable|array|min:1',
 
             'spesifikasi_key' => 'nullable|array',
             'spesifikasi_val' => 'nullable|array',
@@ -195,11 +198,11 @@ class AdminProductController extends Controller
             'intro.required'        => 'Paragraf intro wajib diisi.',
             'pengertian.required'   => 'Pengertian wajib diisi.',
             'kesimpulan.required'   => 'Kesimpulan wajib diisi.',
-            'fungsi.required'       => 'Minimal satu fungsi harus diisi.',
-            'jenis.required'        => 'Minimal satu jenis harus diisi.',
-            'keunggulan.required'   => 'Minimal satu keunggulan harus diisi.',
-            'tabel_header.required' => 'Header tabel harus diisi.',
-            'tabel_data.required'   => 'Data tabel harus diisi.',
+            'fungsi.nullable'       => 'Minimal satu fungsi harus diisi.',
+            'jenis.nullable'        => 'Minimal satu jenis harus diisi.',
+            'keunggulan.nullable'   => 'Minimal satu keunggulan harus diisi.',
+            'tabel_header.nullable' => 'Header tabel harus diisi.',
+            'tabel_data.nullable'   => 'Data tabel harus diisi.',
         ]);
     }
 
