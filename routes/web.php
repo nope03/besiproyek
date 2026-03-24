@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\AdminProductController;
+use App\Models\Product;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,7 +14,16 @@ use App\Http\Controllers\Admin\AdminProductController;
 
 // ── PUBLIC ROUTES ─────────────────────────────────────────────────────────
 
-Route::get('/', fn() => view('home'))->name('home');
+// 1. UBAH ROUTE HOME: Ambil data produk unggulan lalu kirim ke view 'home'
+Route::get('/', function () {
+    $featuredProducts = Product::where('is_active', true)
+                               ->where('is_featured', true)
+                               ->latest() // Urutkan dari yang terbaru
+                               ->get();   // Anda bisa ganti ->get() menjadi ->take(4)->get() jika ingin membatasi tampil 4 saja
+
+    return view('home', compact('featuredProducts'));
+})->name('home');
+
 Route::get('/product', [ProductController::class, 'index'])->name('product');
 Route::get('/product/{slug}', [ProductController::class, 'show'])->name('product.show');
 Route::get('/about-us', fn() => view('about'))->name('about-us');
@@ -54,9 +64,11 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::put('/{id}',          [AdminProductController::class, 'update'])->name('update');
             Route::patch('/{id}/toggle', [AdminProductController::class, 'toggle'])->name('toggle');
             Route::delete('/{id}',       [AdminProductController::class, 'destroy'])->name('destroy');
+            
+            // 2. PINDAHKAN ROUTE TOGGLE-FEATURED KE SINI AGAR AMAN
+            Route::patch('/{product}/toggle-featured', [AdminProductController::class, 'toggleFeatured'])->name('toggle-featured');
         });
 
     });
 
 });
-Route::patch('admin/products/{product}/toggle-featured', [\App\Http\Controllers\Admin\AdminProductController::class, 'toggleFeatured'])->name('admin.products.toggle-featured');

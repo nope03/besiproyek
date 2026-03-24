@@ -134,75 +134,50 @@
         <div class="section-header">
             <span class="section-tag">// PRODUK UNGGULAN</span>
             <h2 class="section-title">Produk <em>Unggulan</em> Kami</h2>
-            <a href="{{ url('/product') }}" class="section-link">Lihat Semua →</a>
+            <a href="{{ route('product') }}" class="section-link">Lihat Semua →</a>
         </div>
+        
         <div class="products-grid">
-
-            <article class="product-card product-card--featured">
-                <div class="product-card__img product-card__img--beton">
-                    <div class="product-card__overlay"></div>
-                    <span class="product-card__tag">TERLARIS</span>
-                </div>
-                <div class="product-card__body">
-                    <span class="product-card__cat">Baja Tulangan</span>
-                    <h3 class="product-card__name">Besi Beton (BJTD)</h3>
-                    <p class="product-card__desc">Besi beton tulangan untuk konstruksi bangunan, jembatan, dan infrastruktur. Tersedia ukuran lengkap sesuai standar SNI 2052:2017.</p>
-                    <div class="product-card__specs">
-                        <span>Standar: SNI</span>
-                        <span>Dia: Ø8 – Ø32mm</span>
+            @forelse($featuredProducts as $product)
+                {{-- Tambahkan class 'product-card--featured' khusus untuk produk pertama --}}
+                <article class="product-card {{ $loop->first ? 'product-card--featured' : '' }}">
+                    
+                    {{-- Karena gambar sebelumnya menggunakan class CSS (--beton, --alt2), kita ubah menjadi inline style agar dinamis --}}
+                    <div class="product-card__img" style="background-image: url('{{ asset('storage/products/' . $product->image) }}'); background-size: cover; background-position: center;">
+                        <div class="product-card__overlay"></div>
+                        
+                        {{-- Munculkan tag TERLARIS hanya di produk pertama --}}
+                        @if($loop->first)
+                            <span class="product-card__tag">TERLARIS</span>
+                        @endif
                     </div>
-                    <a href="{{ url('/product') }}" class="product-card__link">Detail →</a>
-                </div>
-            </article>
-
-            <article class="product-card">
-                <div class="product-card__img product-card__img--alt2">
-                    <div class="product-card__overlay"></div>
-                </div>
-                <div class="product-card__body">
-                    <span class="product-card__cat">Baja Struktural</span>
-                    <h3 class="product-card__name">H-Beam / Baja WF</h3>
-                    <p class="product-card__desc">Baja profil H-Beam dan Wide Flange untuk kolom, balok, dan rangka struktur bangunan bertingkat.</p>
-                    <div class="product-card__specs">
-                        <span>Standar: JIS G3101</span>
-                        <span>Grade: SS400</span>
+                    
+                    <div class="product-card__body">
+                        <span class="product-card__cat">{{ $product->category }}</span>
+                        <h3 class="product-card__name">{{ $product->name }}</h3>
+                        
+                        {{-- Membatasi teks deskripsi maksimal 100 karakter agar desain kartu tetap rapi --}}
+                        <p class="product-card__desc">{{ Str::limit($product->description, 100) }}</p>
+                        
+                        {{-- Catatan: Bagian Specs (Standar/Ukuran) sementara dihilangkan/dikomentari 
+                             karena di tabel 'products' database Anda tidak ada kolom spesifikasi. 
+                             Jika ingin dimunculkan kembali, Anda bisa menggunakan data statis atau menambahkan kolom baru di database. --}}
+                        {{-- 
+                        <div class="product-card__specs">
+                            <span>Ready Stock</span>
+                            <span>Standar: SNI</span>
+                        </div> 
+                        --}}
+                        
+                        <a href="{{ route('product.show', $product->slug) }}" class="product-card__link">Detail →</a>
                     </div>
-                    <a href="{{ url('/product') }}" class="product-card__link">Detail →</a>
+                </article>
+            @empty
+                {{-- Tampilan jika admin belum menandai satupun produk sebagai unggulan --}}
+                <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; color: #6b7280;">
+                    <p>Belum ada produk unggulan yang ditampilkan saat ini.</p>
                 </div>
-            </article>
-
-            <article class="product-card">
-                <div class="product-card__img product-card__img--alt3">
-                    <div class="product-card__overlay"></div>
-                </div>
-                <div class="product-card__body">
-                    <span class="product-card__cat">Wiremesh</span>
-                    <h3 class="product-card__name">Wiremesh / Pagar BRC</h3>
-                    <p class="product-card__desc">Wiremesh untuk pengecoran pelat lantai dan Pagar BRC untuk keamanan area proyek dan perumahan.</p>
-                    <div class="product-card__specs">
-                        <span>Ukuran: M4 – M10</span>
-                        <span>Standar: SNI</span>
-                    </div>
-                    <a href="{{ url('/product') }}" class="product-card__link">Detail →</a>
-                </div>
-            </article>
-
-            <article class="product-card">
-                <div class="product-card__img product-card__img--alt4">
-                    <div class="product-card__overlay"></div>
-                </div>
-                <div class="product-card__body">
-                    <span class="product-card__cat">Pipa & Hollow</span>
-                    <h3 class="product-card__name">Pipa Galvanis & Hollow</h3>
-                    <p class="product-card__desc">Pipa galvanis dan hollow hitam/galvalum untuk berbagai kebutuhan konstruksi, rangka atap, dan pagar.</p>
-                    <div class="product-card__specs">
-                        <span>Berbagai ukuran</span>
-                        <span>Ready Stock</span>
-                    </div>
-                    <a href="{{ url('/product') }}" class="product-card__link">Detail →</a>
-                </div>
-            </article>
-
+            @endforelse
         </div>
     </div>
 </section>

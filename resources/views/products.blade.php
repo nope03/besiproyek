@@ -95,7 +95,7 @@
                          class="catalog-card__img"
                          width="400" height="220"
                          loading="lazy"
-                         onerror="this.onerror=null;this.src='{{ asset('images/products/' . $slug . '.svg') }}'">
+                         onerror="this.onerror=null;this.src='{{ asset('storage/products/' . $slug . '.svg') }}'">
                     <span class="catalog-card__cat-badge">{{ $category }}</span>
                 </a>
                 <div class="catalog-card__body">

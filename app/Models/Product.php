@@ -74,7 +74,7 @@ class Product extends Model
         }
         
         // Fallback ke SVG default
-        return asset('images/products/' . $this->slug . '.svg');
+        return asset('storage/products/' . $this->slug . '.svg');
     }
 
     /**
